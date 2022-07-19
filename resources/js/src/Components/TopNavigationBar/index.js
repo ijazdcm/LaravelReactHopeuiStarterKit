@@ -1,6 +1,6 @@
 import Logo from "../../Assets/Logo";
 
-const TopNavigationBar = () => {
+const TopNavigationBar = ({handleNavigationToggle,toggleStatus}) => {
     return (
         <nav className="nav navbar navbar-expand-lg navbar-light iq-navbar">
             <div className="container-fluid navbar-inner">
@@ -13,7 +13,8 @@ const TopNavigationBar = () => {
                 <div
                     className="sidebar-toggle"
                     data-toggle="sidebar"
-                    data-active="true"
+                    data-active={toggleStatus}
+                    onClick={handleNavigationToggle}
                 >
                     <i className="icon">
                         <svg width="20px" height="20px" viewBox="0 0 24 24">

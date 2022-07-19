@@ -1,8 +1,8 @@
 import Logo from "../../Assets/Logo";
 
-const NavigationBar = () => {
+const NavigationBar = ({handleNavigationToggle,toggleStatus}) => {
     return (
-        <aside className="sidebar sidebar-default navs-rounded-all ">
+        <aside  className={ toggleStatus ? 'sidebar sidebar-default navs-rounded-all on-resize' : 'sidebar sidebar-default navs-rounded-all on-resize sidebar-mini'}>
             <div className="sidebar-header d-flex align-items-center justify-content-start">
                 <a href="../dashboard/index.html" className="navbar-brand">
                     {/*Logo start*/}
@@ -13,7 +13,9 @@ const NavigationBar = () => {
                 <div
                     className="sidebar-toggle"
                     data-toggle="sidebar"
-                    data-active="true"
+                    data-active={toggleStatus}
+                    onClick={handleNavigationToggle}
+
                 >
                     <i className="icon">
                         <svg

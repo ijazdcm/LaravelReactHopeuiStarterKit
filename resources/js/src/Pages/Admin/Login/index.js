@@ -45,59 +45,14 @@ const Login = () => {
                                 Remember Me
                             </label>
                         </div>
-                        <a href="recoverpw.html">Forgot Password?</a>
+                        {/* <a href="recoverpw.html">Forgot Password?</a> */}
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
                     <button type="submit" className="btn btn-primary">
-                        Sign In
+                        Login
                     </button>
                 </div>
-                <p className="text-center my-3">
-                    or sign in with other accounts?
-                </p>
-                <div className="d-flex justify-content-center">
-                    <ul className="list-group list-group-horizontal list-group-flush">
-                        <li className="list-group-item border-0 pb-0">
-                            <a href="#">
-                                <img
-                                    src="../../assets/images/brands/fb.svg"
-                                    alt="fb"
-                                />
-                            </a>
-                        </li>
-                        <li className="list-group-item border-0 pb-0">
-                            <a href="#">
-                                <img
-                                    src="../../assets/images/brands/gm.svg"
-                                    alt="gm"
-                                />
-                            </a>
-                        </li>
-                        <li className="list-group-item border-0 pb-0">
-                            <a href="#">
-                                <img
-                                    src="../../assets/images/brands/im.svg"
-                                    alt="im"
-                                />
-                            </a>
-                        </li>
-                        <li className="list-group-item border-0 pb-0">
-                            <a href="#">
-                                <img
-                                    src="../../assets/images/brands/li.svg"
-                                    alt="li"
-                                />
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <p className="mt-3 text-center">
-                    Don’t have an account?{" "}
-                    <a href="sign-up.html" className="text-underline">
-                        Click here to sign up.
-                    </a>
-                </p>
             </form>
         </>
     );

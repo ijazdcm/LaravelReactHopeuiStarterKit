@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -36,7 +37,8 @@
     <div id="app"></div>
     <!-- Wrapper End-->
 
-
+     <!-- App Script -->
+     <script src="{{ asset('assets/js/hope-ui.js') }}" defer></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <!-- Library Bundle Script -->
     <script src="{{ asset('assets/js/core/libs.min.js') }}"></script>
@@ -65,8 +67,7 @@
 
     <!-- AOS Animation Plugin-->
 
-    <!-- App Script -->
-    <script src="{{ asset('assets/js/hope-ui.js') }}" defer></script>
+
     <script src="{{ asset('assets/js/plugins/prism.mini.js') }}"></script>
 </body>
 

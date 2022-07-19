@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM, { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminLayout from "./Layouts/AdminLayout";
 import FrontendLayout from "./Layouts/FrontendLayout";
@@ -31,6 +31,8 @@ export default function App() {
     );
 }
 
-if (document.getElementById("app")) {
-    ReactDOM.render(<App />, document.getElementById("app"));
-}
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App  />);
+
+

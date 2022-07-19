@@ -4,7 +4,7 @@ import Logo from "../../Assets/Logo";
 const LoginLayout = () => {
     return (
         <>
-            <div class="wrapper">
+           <div className="wrapper">
                 <section className="login-content">
                     <div className="row m-0 align-items-center bg-white vh-100">
                         <div className="col-md-6">
