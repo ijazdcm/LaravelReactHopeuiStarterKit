@@ -24,7 +24,7 @@ const LoginLayout = () => {
                                                 </h4>
                                             </a>
                                             <h2 className="mb-2 text-center">
-                                                Sign In
+                                                Log In
                                             </h2>
                                             <p className="text-center">
                                                 Login to stay connected.

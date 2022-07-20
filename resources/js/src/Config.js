@@ -1,9 +1,20 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+
+const token = Cookies.get("auth_token");
+
+const apiUrl = "http://127.0.0.1:8000/api/";
 
 const api = axios.create({
-    baseURL: process.env.APP_URL,
+    baseURL: apiUrl,
     timeout: 1000,
-    headers: { Accept: "application/json" },
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    },
 });
 
 export default api;
