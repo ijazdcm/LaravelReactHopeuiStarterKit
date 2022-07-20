@@ -15,19 +15,33 @@ export default function App() {
     const [authState, setAuthState] = useState({
         isAuthenticated: false,
         isAdmin: false,
+        user: {},
         permissions: [],
     });
 
     useEffect(() => {
-        AuthService.isAuthenticated().then((e) => {
-            if (e.status == 200) {
-                setAuthState({
-                    ...authState,
-                    isAuthenticated: true,
-                    isAdmin: true,
-                });
-            }
-        });
+        AuthService.isAuthenticated()
+            .then((e) => {
+                if (e.status == 200) {
+                    setAuthState({
+                        ...authState,
+                        isAuthenticated: true,
+                        isAdmin: true,
+                        user: e.data.user,
+                    });
+                }
+            })
+            .catch((e) => {
+                if (e.response.status == 401) {
+                    Cookies.remove("auth_token");
+                    setAuthState({
+                        ...authState,
+                        isAuthenticated: false,
+                        isAdmin: false,
+                        user: "",
+                    });
+                }
+            });
     }, []);
 
     return (
@@ -56,7 +70,7 @@ export default function App() {
                     <Route
                         path="admin/dashboard"
                         element={
-                            authState.isAuthenticated ? (
+                            authState.isAuthenticated && authState.isAdmin ? (
                                 <AdminLayout />
                             ) : (
                                 <Navigate to="/admin/login" replace={true} />

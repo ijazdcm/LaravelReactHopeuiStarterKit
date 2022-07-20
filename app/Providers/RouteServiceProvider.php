@@ -19,6 +19,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+    protected  $api_route_list=[
+
+        ['folder_name'=>'Authentication','file_name'=>'auth_routes'],
+
+    ];
     /**
      * The controller namespace for the application.
      *
@@ -38,10 +43,20 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
+            Route::prefix('api/v1/')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
+
+
+                foreach ($this->api_route_list as $route) {
+
+                    Route::prefix('api/v1')
+                    ->middleware('api')
+                    ->namespace($this->namespace)
+                    ->group(base_path("routes/{$route['folder_name']}/{$route['file_name']}.php"));
+                }
+
 
             Route::middleware('web')
                 ->namespace($this->namespace)

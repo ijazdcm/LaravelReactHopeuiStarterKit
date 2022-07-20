@@ -1,40 +1,41 @@
-
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../../../Context/Admin/AuthContext";
 import AuthService from "../../Service/AuthService";
+import Cookies from "js-cookie";
 
 const LoginForm = () => {
+    const { authState, setAuthState } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const {authState,setAuthState} = useContext(AuthContext)
-    const navigate = useNavigate()
+    const [state, setState] = useState({
+        email: "sai@gmail.com",
+        password: "1412",
+    });
 
-
-    const handleLogin = (e) =>{
-
+    const handleLogin = (e) => {
         e.preventDefault();
 
-        AuthService.login({user:'sai',password:'1412'}).then(e=>{
+        AuthService.login(state).then((e) => {
+            if (e.status == 200) {
 
+                Cookies.set("auth_token", e.data.token);
 
-            setAuthState({...authState,isAuthenticated:true,isAdmin:true})
-                setTimeout(()=>{
-                    navigate("/admin/dashboard", { replace: true });
-                },3000)
-                console.log('runned');
-            console.log(authState);
+                setAuthState({
+                    ...authState,
+                    isAuthenticated: true,
+                    isAdmin: true,
+                    user:e.data.user
+                });
 
-            if(e.status==200)
-            {
+                navigate("/admin/dashboard", { replace: true });
 
             }
-        })
-
-    }
-
+        });
+    };
 
     return (
-        <form onSubmit={(e)=>handleLogin(e)}>
+        <form onSubmit={(e) => handleLogin(e)}>
             <div className="row">
                 <div className="col-lg-12">
                     <div className="form-group">
@@ -42,11 +43,15 @@ const LoginForm = () => {
                             Email
                         </label>
                         <input
+                            onChange={(e) =>
+                                setState({ ...state, email: e.target.value })
+                            }
+                            value={state.email}
                             type="email"
                             className="form-control"
                             id="email"
                             aria-describedby="email"
-                            placeholder=" "
+                            placeholder="Enter your email"
                         />
                     </div>
                 </div>
@@ -56,11 +61,15 @@ const LoginForm = () => {
                             Password
                         </label>
                         <input
+                            onChange={(e) =>
+                                setState({ ...state, password: e.target.value })
+                            }
+                            value={state.password}
                             type="password"
                             className="form-control"
                             id="password"
                             aria-describedby="password"
-                            placeholder=" "
+                            placeholder="Password"
                         />
                     </div>
                 </div>
@@ -82,7 +91,7 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center">
-                <button  type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary">
                     Login
                 </button>
             </div>

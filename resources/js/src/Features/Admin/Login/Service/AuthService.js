@@ -1,19 +1,16 @@
-import api from "../../../../Config"
+import api from "../../../../Config";
 
+const loginRoute = "admin-login";
+const checkAuth = "admin/is-authententicated";
 
-const baseUrl = 'users'
-const checkAuth = 'is-authententicated'
-
-class AuthService{
-
+class AuthService {
     login(credentials) {
-        return api.get(baseUrl)
-      }
+        return api.post(loginRoute, credentials);
+    }
 
     isAuthenticated() {
-        return api.get(checkAuth)
-      }
+        return api.get(checkAuth);
+    }
 }
 
-
-export default new AuthService()
+export default new AuthService();
