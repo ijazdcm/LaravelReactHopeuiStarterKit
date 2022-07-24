@@ -1,7 +1,7 @@
 import api from "../../../../Config";
 
-const loginRoute = "admin-login";
-const checkAuth = "admin/is-authententicated";
+const loginRoute = "login";
+const checkAuth = "is-authententicated";
 
 class AuthService {
     login(credentials) {

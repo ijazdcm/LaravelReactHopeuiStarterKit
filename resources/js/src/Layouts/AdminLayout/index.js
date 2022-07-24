@@ -1,17 +1,21 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router-dom";
 import NavigationBar from "../../Components/NavigationBar";
 import TopNavigationBar from "../../Components/TopNavigationBar";
+
 
 const AdminLayout = () => {
     const [navBarStatus, setNavBarStatus] = useState(true);
 
     const handleNavBarToggle = () => {
+
         setNavBarStatus(!navBarStatus);
     };
 
     return (
         <>
+        <Toaster />
             <NavigationBar
                 handleNavigationToggle={handleNavBarToggle}
                 toggleStatus={navBarStatus}

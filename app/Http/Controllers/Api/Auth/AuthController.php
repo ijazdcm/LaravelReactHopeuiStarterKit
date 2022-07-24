@@ -18,8 +18,7 @@ class AuthController extends Controller
 
             ? response(json_encode(['user' => json_encode(Auth()->user())]), 200)->header('Content-Type', 'application/json')
 
-            : response(json_encode(['message'=>"unAuthenticated"]), 401)->header('Content-Type', 'application/json');
-
+            : response(json_encode(['message' => "unAuthenticated"]), 401)->header('Content-Type', 'application/json');
     }
 
     public function login(LoginRequest $request)
@@ -39,7 +38,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
 
-        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response('', 204)->header('Content-Type', 'application/json');
     }
