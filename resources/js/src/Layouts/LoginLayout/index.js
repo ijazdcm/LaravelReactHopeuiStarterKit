@@ -1,9 +1,11 @@
+import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router-dom";
 import Logo from "../../Assets/Logo";
 
 const LoginLayout = () => {
     return (
         <>
+        <Toaster />
            <div className="wrapper">
                 <section className="login-content">
                     <div className="row m-0 align-items-center bg-white vh-100">

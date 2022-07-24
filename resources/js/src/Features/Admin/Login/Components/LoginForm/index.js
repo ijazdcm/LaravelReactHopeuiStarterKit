@@ -1,41 +1,60 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthContext from "../../../../../Context/Admin/AuthContext";
-import AuthService from "../../Service/AuthService";
-import Cookies from "js-cookie";
+import {  useState } from "react"
+import { useNavigate } from "react-router-dom"
+import AuthService from "../../Service/AuthService"
+import Cookies from "js-cookie"
+import toast from "react-hot-toast"
 
 const LoginForm = () => {
-    const { authState, setAuthState } = useContext(AuthContext);
-    const navigate = useNavigate();
+
+    const navigate = useNavigate()
 
     const [state, setState] = useState({
-        email: "sai@gmail.com",
-        password: "1412",
-    });
+        email: "",
+        password: ""
+    })
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+    const fillUser = () => {
+        setState({
+            email: "user@gmail.com",
+            password: "1412"
+        })
+    }
 
-        AuthService.login(state).then((e) => {
+    const fillAdmin = () => {
+        setState({
+            email: "admin@gmail.com",
+            password: "1412"
+        })
+    }
+
+    const handleLogin = e => {
+
+        e.preventDefault()
+
+        const loginToast = toast.loading("Authenticating...")
+
+        AuthService.login(state).then(e => {
             if (e.status == 200) {
+                toast.success("Authenticated!", {
+                    id: loginToast
+                })
 
-                Cookies.set("auth_token", e.data.token);
+                Cookies.set("auth_token", e.data.token)
+                let response = JSON.parse(e.data.user)
 
-                setAuthState({
-                    ...authState,
-                    isAuthenticated: true,
-                    isAdmin: true,
-                    user:e.data.user
-                });
 
-                navigate("/admin/dashboard", { replace: true });
-
+                setTimeout(() => {
+                    toast.dismiss(loginToast)
+                    window.location.href = response.is_admin
+                        ? "/dashboard"
+                        : "/"
+                }, 1000)
             }
-        });
-    };
+        })
+    }
 
     return (
-        <form onSubmit={(e) => handleLogin(e)}>
+        <form onSubmit={e => handleLogin(e)}>
             <div className="row">
                 <div className="col-lg-12">
                     <div className="form-group">
@@ -43,7 +62,7 @@ const LoginForm = () => {
                             Email
                         </label>
                         <input
-                            onChange={(e) =>
+                            onChange={e =>
                                 setState({ ...state, email: e.target.value })
                             }
                             value={state.email}
@@ -61,7 +80,7 @@ const LoginForm = () => {
                             Password
                         </label>
                         <input
-                            onChange={(e) =>
+                            onChange={e =>
                                 setState({ ...state, password: e.target.value })
                             }
                             value={state.password}
@@ -73,30 +92,26 @@ const LoginForm = () => {
                         />
                     </div>
                 </div>
-                <div className="col-lg-12 d-flex justify-content-between">
-                    <div className="form-check mb-3">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="customCheck1"
-                        />
-                        <label
-                            className="form-check-label"
-                            htmlFor="customCheck1"
-                        >
-                            Remember Me
-                        </label>
-                    </div>
-                    {/* <a href="recoverpw.html">Forgot Password?</a> */}
-                </div>
             </div>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
                     Login
                 </button>
             </div>
+            <div className="d-flex justify-content-around mt-3">
+                <button
+                    type="button"
+                    onClick={fillUser}
+                    className="btn btn-sm btn-dark"
+                >
+                    Login as User
+                </button>
+                <button type="button" onClick={fillAdmin} className="btn btn-sm btn-dark">
+                    Login as Admin
+                </button>
+            </div>
         </form>
-    );
-};
+    )
+}
 
-export default LoginForm;
+export default LoginForm

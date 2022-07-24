@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 //authentication routes
 
-Route::post('admin-login',[AuthController::class,'login']);
+Route::post('login',[AuthController::class,'login']);
 
 
 
-Route::group(["prefix"=>"admin","middleware"=>"auth:sanctum"],function ()
+Route::group(["middleware"=>"auth:sanctum"],function ()
 {
     Route::get('is-authententicated',[AuthController::class,'authententicated']);
-    Route::post('admin-logout',[AuthController::class,'logout']);
+    Route::post('logout',[AuthController::class,'logout']);
 });

@@ -1,66 +1,88 @@
-import React, { useContext, useEffect, useState } from "react";
-import ReactDOM, { createRoot } from "react-dom/client";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AuthContext from "./Context/Admin/AuthContext";
-import AuthService from "./Features/Admin/Login/Service/AuthService";
-import AdminLayout from "./Layouts/AdminLayout";
-import FrontendLayout from "./Layouts/FrontendLayout";
-import LoginLayout from "./Layouts/LoginLayout";
-import Home from "./Pages/Admin/Home";
-import Login from "./Pages/Admin/Login";
-import NotFound from "./Pages/Admin/NotFound";
-import FHome from "./Pages/Frontend/Home";
+import Cookies from "js-cookie"
+import React, { Suspense, useContext, useEffect, useState } from "react"
+import ReactDOM, { createRoot } from "react-dom/client"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import SimpleSpinner from "./Components/Spinner/SimpleSpinner"
+import AuthContext from "./Context/Admin/AuthContext"
+import AuthService from "./Features/Admin/Login/Service/AuthService"
+import AdminLayout from "./Layouts/AdminLayout"
+import FrontendLayout from "./Layouts/FrontendLayout"
+import LoginLayout from "./Layouts/LoginLayout"
+import Home from "./Pages/Admin/Home"
+import Login from "./Pages/Admin/Login"
+import NotFound from "./Pages/Admin/NotFound"
+import FHome from "./Pages/Frontend/Home"
 
 export default function App() {
     const [authState, setAuthState] = useState({
         isAuthenticated: false,
         isAdmin: false,
+        isLoading: true,
         user: {},
-        permissions: [],
-    });
+        permissions: []
+    })
 
     useEffect(() => {
         AuthService.isAuthenticated()
-            .then((e) => {
+            .then(e => {
                 if (e.status == 200) {
+                    let response = JSON.parse(e.data.user)
+
                     setAuthState({
                         ...authState,
                         isAuthenticated: true,
-                        isAdmin: true,
-                        user: e.data.user,
-                    });
+                        isLoading: false,
+                        isAdmin: response.is_admin ? true : false,
+                        user: response
+                    })
                 }
             })
-            .catch((e) => {
+            .catch(e => {
                 if (e.response.status == 401) {
-                    Cookies.remove("auth_token");
+                    Cookies.remove("auth_token")
                     setAuthState({
                         ...authState,
                         isAuthenticated: false,
+                        isLoading: false,
                         isAdmin: false,
-                        user: "",
-                    });
+                        user: ""
+                    })
                 }
-            });
-    }, []);
+            })
+    }, [])
 
     return (
         <AuthContext.Provider value={{ authState, setAuthState }}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<FrontendLayout />}>
+                    <Route
+                        path="/"
+                        element={
+                            authState.isAdmin ? (
+                                <Navigate to="/dashboard" replace={true} />
+                            ) : (
+                                <FrontendLayout />
+                            )
+                        }
+                    >
                         <Route index element={<FHome />} />
                     </Route>
-                    <Route path="admin/login" element={<LoginLayout />}>
+                    <Route
+                        path="/login"
+                        element={
+                            authState.isAuthenticated ? (
+                                <Navigate to="/" replace={true} />
+                            ) : (
+                                <LoginLayout />
+                            )
+                        }
+                    >
                         <Route
                             index
                             element={
                                 authState.isAuthenticated &&
                                 authState.isAdmin ? (
-                                    <Navigate
-                                        to="/admin/dashboard"
-                                        replace={true}
-                                    />
+                                    <Navigate to="/dashboard" replace={true} />
                                 ) : (
                                     <Login />
                                 )
@@ -68,12 +90,12 @@ export default function App() {
                         />
                     </Route>
                     <Route
-                        path="admin/dashboard"
+                        path="/dashboard"
                         element={
                             authState.isAuthenticated && authState.isAdmin ? (
                                 <AdminLayout />
                             ) : (
-                                <Navigate to="/admin/login" replace={true} />
+                                <Navigate to="/login" replace={true} />
                             )
                         }
                     >
@@ -83,9 +105,9 @@ export default function App() {
                 </Routes>
             </BrowserRouter>
         </AuthContext.Provider>
-    );
+    )
 }
 
-const container = document.getElementById("app");
-const root = createRoot(container);
-root.render(<App />);
+const container = document.getElementById("app")
+const root = createRoot(container)
+root.render(<App />)

@@ -1,6 +1,13 @@
+import { useContext } from "react";
 import Logo from "../../Assets/Logo";
+import AuthContext from "../../Context/Admin/AuthContext";
+import LogoutButton from "../Button/LogoutButton";
 
 const TopNavigationBar = ({handleNavigationToggle,toggleStatus}) => {
+
+    const { authState, setAuthState } = useContext(AuthContext)
+
+
     return (
         <nav className="nav navbar navbar-expand-lg navbar-light iq-navbar">
             <div className="container-fluid navbar-inner">
@@ -63,10 +70,10 @@ const TopNavigationBar = ({handleNavigationToggle,toggleStatus}) => {
 
                                 <div className="caption ms-3 d-none d-md-block ">
                                     <h6 className="mb-0 caption-title">
-                                        Saravana Sai
+                                        {authState.user.name}
                                     </h6>
                                     <p className="mb-0 caption-sub-title">
-                                        Super Admin
+                                    {authState.user.is_admin ? 'Super Admin' :'User'}
                                     </p>
                                 </div>
                             </a>
@@ -94,12 +101,7 @@ const TopNavigationBar = ({handleNavigationToggle,toggleStatus}) => {
                                     <hr className="dropdown-divider" />
                                 </li>
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="../dashboard/auth/sign-in.html"
-                                    >
-                                        Logout
-                                    </a>
+                                    <LogoutButton />
                                 </li>
                             </ul>
                         </li>
