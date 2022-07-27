@@ -27,7 +27,8 @@ const AdminLayout = () => {
                         toggleStatus={navBarStatus}
                     />
                 </div>
-                <div className="conatiner-fluid content-inner py-0">
+                <div className="conatiner-fluid content-inner mt-5 py-0">
+
                     <Outlet />
                 </div>
             </main>

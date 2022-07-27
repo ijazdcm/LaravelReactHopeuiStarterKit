@@ -1,17 +1,17 @@
-import Cookies from "js-cookie"
-import React, { Suspense, useContext, useEffect, useState } from "react"
-import ReactDOM, { createRoot } from "react-dom/client"
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import SimpleSpinner from "./Components/Spinner/SimpleSpinner"
-import AuthContext from "./Context/Admin/AuthContext"
-import AuthService from "./Features/Admin/Login/Service/AuthService"
-import AdminLayout from "./Layouts/AdminLayout"
-import FrontendLayout from "./Layouts/FrontendLayout"
-import LoginLayout from "./Layouts/LoginLayout"
-import Home from "./Pages/Admin/Home"
-import Login from "./Pages/Admin/Login"
-import NotFound from "./Pages/Admin/NotFound"
-import FHome from "./Pages/Frontend/Home"
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import AuthContext from "./Context/Admin/AuthContext";
+import AuthService from "./Features/Admin/Login/Service/AuthService";
+import AdminLayout from "./Layouts/AdminLayout";
+import FrontendLayout from "./Layouts/FrontendLayout";
+import LoginLayout from "./Layouts/LoginLayout";
+import Home from "./Pages/Admin/Home";
+import Login from "./Pages/Admin/Login";
+import NotFound from "./Pages/Admin/NotFound";
+import FHome from "./Pages/Frontend/Home";
+import { adminRoutes } from "./Routes/routes";
 
 export default function App() {
     const [authState, setAuthState] = useState({
@@ -19,37 +19,37 @@ export default function App() {
         isAdmin: false,
         isLoading: true,
         user: {},
-        permissions: []
-    })
+        permissions: [],
+    });
 
     useEffect(() => {
         AuthService.isAuthenticated()
-            .then(e => {
+            .then((e) => {
                 if (e.status == 200) {
-                    let response = JSON.parse(e.data.user)
+                    let response = JSON.parse(e.data.user);
 
                     setAuthState({
                         ...authState,
                         isAuthenticated: true,
                         isLoading: false,
                         isAdmin: response.is_admin ? true : false,
-                        user: response
-                    })
+                        user: response,
+                    });
                 }
             })
-            .catch(e => {
+            .catch((e) => {
                 if (e.response.status == 401) {
-                    Cookies.remove("auth_token")
+                    Cookies.remove("auth_token");
                     setAuthState({
                         ...authState,
                         isAuthenticated: false,
                         isLoading: false,
                         isAdmin: false,
-                        user: ""
-                    })
+                        user: "",
+                    });
                 }
-            })
-    }, [])
+            });
+    }, []);
 
     return (
         <AuthContext.Provider value={{ authState, setAuthState }}>
@@ -100,14 +100,19 @@ export default function App() {
                         }
                     >
                         <Route index element={<Home />} />
+                        {adminRoutes.map(({ Path, Component },i) => {
+                            return (
+                                <Route key={i} path={Path} element={<Component />} />
+                            );
+                        })}
                     </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </AuthContext.Provider>
-    )
+    );
 }
 
-const container = document.getElementById("app")
-const root = createRoot(container)
-root.render(<App />)
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(<App />);

@@ -1,7 +1,20 @@
+import WidgetCard from "../../../Components/Card/WidgetCard";
+
 const Home = () => {
     return (
         <div className="row">
-            <h3>Admin Home</h3>
+            <div class="col-lg-3">
+                <WidgetCard  />
+            </div>
+            <div class="col-lg-3">
+                <WidgetCard />
+            </div>
+            <div class="col-lg-3">
+                <WidgetCard />
+            </div>
+            <div class="col-lg-3">
+                <WidgetCard />
+            </div>
         </div>
     );
 };

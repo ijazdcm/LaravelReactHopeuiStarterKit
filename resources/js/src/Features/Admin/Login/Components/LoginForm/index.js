@@ -1,60 +1,57 @@
-import {  useState } from "react"
-import { useNavigate } from "react-router-dom"
-import AuthService from "../../Service/AuthService"
-import Cookies from "js-cookie"
-import toast from "react-hot-toast"
+import { useState } from "react";
+import AuthService from "../../Service/AuthService";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
 
-    const navigate = useNavigate()
 
     const [state, setState] = useState({
         email: "",
-        password: ""
-    })
+        password: "",
+    });
 
     const fillUser = () => {
         setState({
             email: "user@gmail.com",
-            password: "1412"
-        })
-    }
+            password: "1412",
+        });
+    };
 
     const fillAdmin = () => {
         setState({
             email: "admin@gmail.com",
-            password: "1412"
-        })
-    }
+            password: "1412",
+        });
+    };
 
-    const handleLogin = e => {
+    const handleLogin = (e) => {
+        e.preventDefault();
 
-        e.preventDefault()
+        const loginToast = toast.loading("Authenticating...");
 
-        const loginToast = toast.loading("Authenticating...")
-
-        AuthService.login(state).then(e => {
+        AuthService.login(state).then((e) => {
             if (e.status == 200) {
                 toast.success("Authenticated!", {
-                    id: loginToast
-                })
+                    id: loginToast,
+                });
 
-                Cookies.set("auth_token", e.data.token)
-                let response = JSON.parse(e.data.user)
+                Cookies.set("auth_token", e.data.token);
 
+                let response = JSON.parse(e.data.user);
 
                 setTimeout(() => {
-                    toast.dismiss(loginToast)
+                    toast.dismiss(loginToast);
                     window.location.href = response.is_admin
                         ? "/dashboard"
-                        : "/"
-                }, 1000)
+                        : "/";
+                }, 1000);
             }
-        })
-    }
+        });
+    };
 
     return (
-        <form onSubmit={e => handleLogin(e)}>
+        <form onSubmit={(e) => handleLogin(e)}>
             <div className="row">
                 <div className="col-lg-12">
                     <div className="form-group">
@@ -62,7 +59,7 @@ const LoginForm = () => {
                             Email
                         </label>
                         <input
-                            onChange={e =>
+                            onChange={(e) =>
                                 setState({ ...state, email: e.target.value })
                             }
                             value={state.email}
@@ -80,7 +77,7 @@ const LoginForm = () => {
                             Password
                         </label>
                         <input
-                            onChange={e =>
+                            onChange={(e) =>
                                 setState({ ...state, password: e.target.value })
                             }
                             value={state.password}
@@ -106,12 +103,16 @@ const LoginForm = () => {
                 >
                     Login as User
                 </button>
-                <button type="button" onClick={fillAdmin} className="btn btn-sm btn-dark">
+                <button
+                    type="button"
+                    onClick={fillAdmin}
+                    className="btn btn-sm btn-dark"
+                >
                     Login as Admin
                 </button>
             </div>
         </form>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;
