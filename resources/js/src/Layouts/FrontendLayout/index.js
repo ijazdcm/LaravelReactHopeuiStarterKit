@@ -5,10 +5,12 @@ import HomeNavigationBar from "../../Components/HomeNavigationBar";
 const FrontendLayout = () => {
     return (
         <>
-         <Toaster />
+            <Toaster />
             {/* Navigation Bar For Home  */}
             <HomeNavigationBar />
-
+            <div class="conatiner-fluid content-inner mt-4 py-0">
+                <Outlet />
+            </div>
         </>
     );
 };

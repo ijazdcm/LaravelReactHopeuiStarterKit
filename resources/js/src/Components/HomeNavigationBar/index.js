@@ -1,10 +1,10 @@
-import { useContext } from "react"
-import { Link } from "react-router-dom"
-import AuthContext from "../../Context/Admin/AuthContext"
-import LogoutButton from "../Button/LogoutButton"
+import { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
+import AuthContext from "../../Context/Admin/AuthContext";
+import LogoutButton from "../Button/LogoutButton";
 
 const HomeNavigationBar = () => {
-    const { authState, setAuthState } = useContext(AuthContext)
+    const { authState, setAuthState } = useContext(AuthContext);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -26,23 +26,44 @@ const HomeNavigationBar = () => {
                 <div className="collapse navbar-collapse" id="navbar-2">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <Link
-                                className="nav-link active"
+                            <NavLink
+                                className={({ isActive }) =>
+                                isActive
+                                    ? "nav-link active"
+                                    : "nav-link"
+                            }
                                 aria-current="page"
                                 to={"/"}
+                                end
                             >
                                 Home
-                            </Link>
+                            </NavLink>
                         </li>
                         <li class="nav-item">
                             {authState.isAuthenticated ? (
-                                <Link class="nav-link" to={"login"}>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    to={"user/my-profile"}
+                                    end
+                                >
                                     My Profile
-                                </Link>
+                                </NavLink>
                             ) : (
-                                <Link class="nav-link" to={"login"}>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    to={"login"}
+                                    end
+                                >
                                     Login
-                                </Link>
+                                </NavLink>
                             )}
                         </li>
                         <li className="nav-item dropdown">
@@ -95,7 +116,7 @@ const HomeNavigationBar = () => {
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default HomeNavigationBar
+export default HomeNavigationBar;

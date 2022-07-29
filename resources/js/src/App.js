@@ -11,7 +11,7 @@ import Home from "./Pages/Admin/Home";
 import Login from "./Pages/Admin/Login";
 import NotFound from "./Pages/Admin/NotFound";
 import FHome from "./Pages/Frontend/Home";
-import { adminRoutes } from "./Routes/routes";
+import { adminRoutes, userRoutes } from "./Routes/routes";
 
 export default function App() {
     const [authState, setAuthState] = useState({
@@ -66,6 +66,14 @@ export default function App() {
                         }
                     >
                         <Route index element={<FHome />} />
+
+                        {userRoutes.map(({Path,Component},i)=>{
+
+                            return <Route key={i} path={Path} element={<Component />} />
+                        })
+
+                        }
+
                     </Route>
                     <Route
                         path="/login"
